@@ -16,7 +16,7 @@ import fuenteInformacion.Fuente;
  */
 public class Main {
 	
-	public static int PRECISION = 5;
+	public static int PRECISION = 100;
 	
 	/**
 	 * Objeto de la clase Fuente, que contiene todas las operaciones que realizará el programa

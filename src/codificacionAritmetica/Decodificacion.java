@@ -1,7 +1,10 @@
 package codificacionAritmetica;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+
+import vista.Main;
 
 public class Decodificacion {
 
@@ -13,7 +16,7 @@ public class Decodificacion {
 
 	public String decode(String num, int l) {
 		
-		Fraccion f = this.pasarAFraccion(num);
+		BigDecimal f = new BigDecimal(num);;
 		StringBuffer cadena = new StringBuffer("");
 		SimboloIntervalo si;
 		
@@ -26,7 +29,7 @@ public class Decodificacion {
 		return cadena.toString();
 	}
 	
-	private SimboloIntervalo encontrar(Fraccion f) {
+	private SimboloIntervalo encontrar(BigDecimal f) {
 		
 		for(SimboloIntervalo si : this.finter) {
 			if(si.isIn(f)) {
@@ -36,43 +39,31 @@ public class Decodificacion {
 		return null;
 	}
 	
-	private Fraccion normalizar(SimboloIntervalo si, Fraccion num) {
+	private BigDecimal normalizar(SimboloIntervalo si, BigDecimal num) {
 		
-		Fraccion inferior = si.getInferior();
-		Fraccion superior = si.getSuperior();
+		BigDecimal inferior = si.getInferior();
+		BigDecimal superior = si.getSuperior();
 		
 		//H - L
-		BigInteger minimo = SimboloIntervalo.mcd(inferior.getDen(), superior.getDen(), BigInteger.ONE);
-		BigInteger Lm = inferior.getNum().multiply((minimo.divide(inferior.getDen())));
-		BigInteger Hm = superior.getNum().multiply((minimo.divide(inferior.getDen())));
-		
-		Fraccion abajo = new Fraccion(Hm.subtract(Lm), minimo);
+		BigDecimal h_l = superior.subtract(inferior);
 		
 		//F - L
-		//Fraccion valor = pasarAFraccion(num);
-		BigInteger minimo2 = SimboloIntervalo.mcd(inferior.getDen(), num.getDen(), BigInteger.ONE);
-		BigInteger Ln = inferior.getNum().multiply((minimo2.divide(inferior.getDen())));
-		BigInteger V = num.getNum().multiply((minimo2.divide(num.getDen())));
-		
-		Fraccion arriba = new Fraccion(V.subtract(Ln), minimo2);
+		BigDecimal f_l = num.subtract(inferior);
 		
 		//re1 / res2
-		BigInteger numerador = arriba.getNum().multiply(abajo.getDen());
-		BigInteger denominador = arriba.getDen().multiply(abajo.getNum());
-		
-		return new Fraccion(numerador,denominador);		
+		return f_l.divide(h_l, Main.PRECISION, RoundingMode.HALF_EVEN);	
 	}
 	
-	private Fraccion pasarAFraccion(String num) {
-		Fraccion f;
-		String decimales = num.substring(2);
-		int dec = decimales.length();
-		StringBuffer den = new StringBuffer("1");
-		for(int i = 0; i<dec; i++) {
-			den.append("0");
-		}
-		String denominador = den.toString();
-		f = new Fraccion(new BigInteger(decimales), new BigInteger(denominador));		
-		return f;
-	}
+//	private Fraccion pasarAFraccion(String num) {
+//		Fraccion f;
+//		String decimales = num.substring(2);
+//		int dec = decimales.length();
+//		StringBuffer den = new StringBuffer("1");
+//		for(int i = 0; i<dec; i++) {
+//			den.append("0");
+//		}
+//		String denominador = den.toString();
+//		f = new Fraccion(new BigInteger(decimales), new BigInteger(denominador));		
+//		return f;
+//	}
 }

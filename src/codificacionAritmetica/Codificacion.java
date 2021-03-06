@@ -1,13 +1,12 @@
 package codificacionAritmetica;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import vista.Main;
 
-
+@Deprecated
 public class Codificacion {
 
 	private ArrayList<SimboloIntervalo> finter = null;
@@ -80,8 +79,8 @@ public class Codificacion {
 		int indice = buscarIndice(i);
 		SimboloIntervalo si = this.finter.get(indice);
 		
-		Fraccion nuevoInf = si.getInferior();
-		Fraccion nuevoSup = si.getSuperior();
+		BigDecimal nuevoInf = si.getInferior();
+		BigDecimal nuevoSup = si.getSuperior();
 		
 		if(i!=0) {
 			//en caso de que no sea el primer caracter, remodelamos el intervalo
@@ -119,24 +118,7 @@ public class Codificacion {
 		return -1;
 	}
 	
-//	private Fraccion normalizar(Fraccion L, Fraccion H, Fraccion j) {	
-//		//L + (H - L) * j
-//			//H - L
-//		BigInteger minimo = SimboloIntervalo.mcd(L.getDen(), H.getDen(), BigInteger.ONE);
-//		BigInteger Lm = L.getNum().multiply(minimo.divide(L.getDen()));
-//		BigInteger Hm = H.getNum().multiply(minimo.divide(H.getDen()));
-//		Fraccion res = new Fraccion(Hm.subtract(Lm), minimo);		
-//			//RES * j
-//		res = new Fraccion(res.getNum().multiply(j.getNum()), res.getDen().multiply(j.getDen()));		
-//			//L + res
-//		minimo = SimboloIntervalo.mcd(res.getDen(), L.getDen(), BigInteger.ONE);
-//		Lm = L.getNum().multiply((minimo.divide(L.getDen())));
-//		BigInteger resM = res.getNum().multiply((minimo.divide(res.getDen())));
-//		
-//		return new Fraccion(Lm.add(resM),minimo);
-//	}
-	
-	private Fraccion normalizar(Fraccion L, Fraccion H, Fraccion j) {	
+	private Fraccion normalizar(BigDecimal L, BigDecimal H, BigDecimal j) {	
 		//L + (H - L) * j
 			//H - L
 		BigInteger minimo = SimboloIntervalo.mcd(L.getDen(), H.getDen(), BigInteger.ONE);

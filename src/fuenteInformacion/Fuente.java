@@ -90,6 +90,8 @@ public class Fuente {
 				this.simbolos.add(s);
 			}
 		}
+		
+		int i=0;
 	}
 	
 	/**

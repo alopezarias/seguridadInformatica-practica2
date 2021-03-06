@@ -33,7 +33,7 @@ public class Aritmetica {
 		for(Simbolo s : this.fuenteLista) {
 			fInf = new Fraccion(sumaParcial, total);
 			fSup = new Fraccion(s.getNumero()+sumaParcial, total);
-			si = new SimboloIntervalo(s, fInf, fSup);
+			si = new SimboloIntervalo(s, fInf.getValor(), fSup.getValor());
 			this.fuenteIntervalos.add(si);
 			sumaParcial += s.getNumero();
 		}
