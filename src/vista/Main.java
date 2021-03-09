@@ -2,6 +2,8 @@ package vista;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import codificacionAritmetica.Aritmetica;
@@ -76,7 +78,7 @@ public class Main {
 		String texto;
 		
 		try {
-			FileReader f = new FileReader(ruta);
+			FileReader f = new FileReader(ruta/*, StandardCharsets.US_ASCII*/);
 		    BufferedReader b = new BufferedReader(f);
 		    while((linea = b.readLine())!=null) {
 		    	

@@ -68,7 +68,7 @@ public class Fuente {
 			
 			finalText.append(texto.charAt(i-1));
 			if(i!=0 && i%n == 0 && i!=texto.length()) {
-				finalText.append("-");
+				finalText.append("\t");
 			}
 			
 		}
@@ -76,7 +76,7 @@ public class Fuente {
 		this.texto = finalText.toString();
 		finalText = new StringBuffer("");
 		
-		String[] simbDif = this.texto.split("-");
+		String[] simbDif = this.texto.split("\t");
 		
 		for(String simb : simbDif) {
 			

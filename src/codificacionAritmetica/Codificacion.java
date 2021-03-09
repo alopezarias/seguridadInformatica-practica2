@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import vista.Main;
 
-@Deprecated
+//@Deprecated
 public class Codificacion {
 
 	private ArrayList<SimboloIntervalo> finter = null;
@@ -54,14 +54,14 @@ public class Codificacion {
 			
 			finalText.append(texto.charAt(i-1));
 			if(i!=0 && i!=texto.length()) {
-				finalText.append("-");
+				finalText.append("\t");
 			}
 		}
 		
 		texto = finalText.toString();
 		finalText = null;
 		
-		String[] simbDif = texto.split("-");
+		String[] simbDif = texto.split("\t");
 		this.simb = new ArrayList<String>();
 		
 		for(String simb : simbDif) {
@@ -74,7 +74,7 @@ public class Codificacion {
 		return codeRec(null, null, 0);
 	}
 	
-	private String codeRec(Fraccion inf, Fraccion sup, int i) {
+	private String codeRec(BigDecimal inf, BigDecimal sup, int i) {
 		//AQUÍ PETA FIJO EL PROGRAMA
 		int indice = buscarIndice(i);
 		SimboloIntervalo si = this.finter.get(indice);
@@ -118,31 +118,35 @@ public class Codificacion {
 		return -1;
 	}
 	
-	private Fraccion normalizar(BigDecimal L, BigDecimal H, BigDecimal j) {	
+	private BigDecimal normalizar(BigDecimal L, BigDecimal H, BigDecimal j) {	
 		//L + (H - L) * j
 			//H - L
-		BigInteger minimo = SimboloIntervalo.mcd(L.getDen(), H.getDen(), BigInteger.ONE);
-		BigInteger Lm = L.getNum().multiply(minimo.divide(L.getDen()));
-		BigInteger Hm = H.getNum().multiply(minimo.divide(H.getDen()));
-		Fraccion res = new Fraccion(Hm.subtract(Lm), minimo);		
+		BigDecimal H_L = H.subtract(L);
+//		BigInteger minimo = SimboloIntervalo.mcd(L.getDen(), H.getDen(), BigInteger.ONE);
+//		BigInteger Lm = L.getNum().multiply(minimo.divide(L.getDen()));
+//		BigInteger Hm = H.getNum().multiply(minimo.divide(H.getDen()));
+//		Fraccion res = new Fraccion(Hm.subtract(Lm), minimo);		
 			//RES * j
-		res = new Fraccion(res.getNum().multiply(j.getNum()), res.getDen().multiply(j.getDen()));		
+		BigDecimal H_L_j = H_L.multiply(j);
+		//res = new Fraccion(res.getNum().multiply(j.getNum()), res.getDen().multiply(j.getDen()));		
 			//L + res
-		BigDecimal arriba = new BigDecimal(res.getNum().toString());
-		BigDecimal abajo = new BigDecimal(res.getDen().toString());
-		BigDecimal resDec = arriba.divide(abajo, Main.PRECISION, RoundingMode.HALF_UP);
+		BigDecimal L_H_L_j = L.add(H_L_j);
+//		BigDecimal arriba = new BigDecimal(res.getNum().toString());
+//		BigDecimal abajo = new BigDecimal(res.getDen().toString());
+//		BigDecimal resDec = arriba.divide(abajo, Main.PRECISION, RoundingMode.HALF_UP);
 		
-		BigDecimal lm = new BigDecimal(Lm.toString());
-		BigDecimal min = new BigDecimal();
+//		BigDecimal lm = new BigDecimal(Lm.toString());
+//		BigDecimal min = new BigDecimal();
 		
-		return new Fraccion(Lm.add(resM),minimo);
+		//return new Fraccion(Lm.add(resM),minimo);
+		return L_H_L_j;
 	}
 	
-	private String calcularCodigo(Fraccion inf, Fraccion sup) {
+	private String calcularCodigo(BigDecimal inf, BigDecimal sup) {
 		//TODO
 		
-		BigDecimal L = inf.getValor();
-		BigDecimal H = sup.getValor();
+		BigDecimal L = inf;
+		BigDecimal H = sup;
 		
 		String Ls = String.valueOf(L);
 		String Hs = String.valueOf(H);
